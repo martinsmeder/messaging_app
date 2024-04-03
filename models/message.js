@@ -21,6 +21,10 @@ const messageSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  conversationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
 });
 
 // Create the Message model

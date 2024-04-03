@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1= title
+
+  // Display error messages if any
+  if error
+    p.error= error
+
+  form(action="/user/create" method="post")
+    label(for="username") Username:
+    input(type="text" name="username" required)
+
+    label(for="email") Email:
+    input(type="email" name="email" required)
+
+    label(for="password") Password:
+    input(type="password" name="password" required)
+
+    label(for="confirmPassword") Confirm Password
+    input(name="confirmPassword", type="password", required)
+
+    input(type="submit" value="Create User")
