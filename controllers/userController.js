@@ -10,7 +10,7 @@ exports.user_detail = asyncHandler(async (req, res, next) => {
 
 // Display User create form on GET.
 exports.user_create_get = asyncHandler(async (req, res, next) => {
-  res.render("signup_form", { title: "Create User" });
+  res.render("signup_form", { title: "Sign up" });
 });
 
 // Handle User create on POST.
@@ -49,7 +49,7 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
 
   // If there are errors, render the form again with error messages
   if (!errors.isEmpty()) {
-    return res.render("signup-form", {
+    return res.render("signup_form", {
       title: "Sign Up",
       errors: errors.array(),
     });
@@ -63,7 +63,6 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     password: hashedPassword, // Save hashed password to the database
-    is_admin: req.body.is_admin === "on",
   });
 
   try {

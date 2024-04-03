@@ -3,10 +3,6 @@ extends layout
 block content
   h1= title
 
-  // Display error messages if any
-  if error
-    p.error= error
-
   form(action="/user/create" method="post")
     label(for="username") Username:
     input(type="text" name="username" required)
@@ -21,3 +17,8 @@ block content
     input(name="confirmPassword", type="password", required)
 
     input(type="submit" value="Create User")
+  
+  if errors
+    ul
+      for error in errors
+        li= error.msg
