@@ -90,6 +90,14 @@ exports.user_login_post = passport.authenticate("local", {
   failureRedirect: "/login",
 });
 
+// Handle User logout on GET.
+exports.user_logout_get = asyncHandler(async (req, res, next) => {
+  req.logout(() => {
+    // Log out user (callback required)
+    res.redirect("/"); // Redirect to the home page after logout
+  });
+});
+
 // Display User delete form on GET.
 exports.user_delete_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: User delete GET");
