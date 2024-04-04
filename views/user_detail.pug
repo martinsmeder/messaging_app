@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  h2= currentUser.username
+  p= "Email: " + currentUser.email
+
+  a(href="/user/update") Update Profile
+  br
+  br
+  a(href="/user/delete") Delete Profile

@@ -6,7 +6,16 @@ const bcrypt = require("bcrypt");
 
 // Display detail page for a specific User.
 exports.user_detail = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User detail");
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    res.render("user_detail", { title: "User Profile", user });
+  } catch (err) {
+    return next(err);
+  }
 });
 
 // Display User signup form on GET.
@@ -98,6 +107,57 @@ exports.user_logout_get = asyncHandler(async (req, res, next) => {
   });
 });
 
+// Display User update form on GET.
+exports.user_update_get = asyncHandler(async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id); // Assuming user is authenticated
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error;
+    }
+    res.render("user_update_form", { title: "Update Profile", user });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+// Handle User update on POST.
+exports.user_update_post = asyncHandler(async (req, res, next) => {
+  try {
+    // Extract email and passwords from request body
+    const { email, oldPassword, newPassword } = req.body;
+
+    // Validate old password
+    const user = await User.findById(req.user._id); // Assuming user is authenticated
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error;
+    }
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).render("user_update_form", {
+        title: "Update Profile",
+        user,
+        error: "Old password is incorrect",
+      });
+    }
+
+    // Validate and hash new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update user document
+    user.email = email;
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.redirect("/user/detail");
+  } catch (err) {
+    return next(err);
+  }
+});
+
 // Display User delete form on GET.
 exports.user_delete_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: User delete GET");
@@ -106,14 +166,4 @@ exports.user_delete_get = asyncHandler(async (req, res, next) => {
 // Handle User delete on POST.
 exports.user_delete_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: User delete POST");
-});
-
-// Display User update form on GET.
-exports.user_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User update GET");
-});
-
-// Handle User update on POST.
-exports.user_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User update POST");
 });

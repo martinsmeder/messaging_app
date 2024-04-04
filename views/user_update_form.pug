@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1= title
+
+  form(action="/user/update" method="post")
+    label(for="email") Email:
+    input(type="email" name="email" value=user.email required)
+
+    label(for="oldPassword") Old Password:
+    input(type="password" name="oldPassword" required)
+
+    label(for="newPassword") New Password:
+    input(type="password" name="newPassword" required)
+
+    input(type="submit" value="Update Profile")
+  
+  if error
+    p.error= error
+  

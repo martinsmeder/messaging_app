@@ -8,11 +8,14 @@ html
       ul
         li
           a(href="/") Home
-        li
-            if currentUser
-              a(href="/logout", style="color: red;") Log out
-            else
-              a(href="/login") Log in
+        if currentUser
+          li
+            a(href="/logout", style="color: red;") Log out
+          li
+            a(href="/user/detail") Profile
+        else
+          li
+            a(href="/login") Log in
         li
           a(href="/signup") Sign up
     main
