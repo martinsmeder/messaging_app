@@ -8,13 +8,13 @@ exports.user_detail = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: User detail");
 });
 
-// Display User create form on GET.
-exports.user_create_get = asyncHandler(async (req, res, next) => {
+// Display User signup form on GET.
+exports.user_signup_get = asyncHandler(async (req, res, next) => {
   res.render("signup_form", { title: "Sign up" });
 });
 
-// Handle User create on POST.
-exports.user_create_post = asyncHandler(async (req, res, next) => {
+// Handle User signup on POST.
+exports.user_signup_post = asyncHandler(async (req, res, next) => {
   // Sanitize and validate user input using Express-validator
   await body("username")
     .trim()
@@ -22,18 +22,21 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
     .escape()
     .withMessage("Username must be specified.")
     .run(req);
+
   await body("email")
     .trim()
     .isLength({ min: 1 })
     .escape()
     .withMessage("Email must be specified.")
     .run(req);
+
   await body("password")
     .trim()
     .isLength({ min: 6 })
     .escape()
     .withMessage("Password must be at least 6 characters long.")
     .run(req);
+
   await body("confirmPassword")
     .custom((value, { req }) => {
       if (value !== req.body.password) {
@@ -93,16 +96,6 @@ exports.user_update_get = asyncHandler(async (req, res, next) => {
 // Handle User update on POST.
 exports.user_update_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: User update POST");
-});
-
-// Display User signup form on GET.
-exports.user_signup_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User signup GET");
-});
-
-// Handle User signup on POST.
-exports.user_signup_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User signup POST");
 });
 
 // Display User login form on GET.
