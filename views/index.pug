@@ -1,4 +1,7 @@
 include layout
   block content
     h1= title
-    p Welcome to #{title}
+    if currentUser
+      p Conversation List
+    else 
+      p Please login och sign up

@@ -1,7 +1,8 @@
 const User = require("../models/user");
-const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
+const asyncHandler = require("express-async-handler");
+const passport = require("passport");
+const bcrypt = require("bcrypt");
 
 // Display detail page for a specific User.
 exports.user_detail = asyncHandler(async (req, res, next) => {
@@ -78,6 +79,17 @@ exports.user_signup_post = asyncHandler(async (req, res, next) => {
   }
 });
 
+// Display User login form on GET.
+exports.user_login_get = asyncHandler(async (req, res, next) => {
+  res.render("login_form", { title: "Login" });
+});
+
+// Handle User login on POST.
+exports.user_login_post = passport.authenticate("local", {
+  successRedirect: "/",
+  failureRedirect: "/login",
+});
+
 // Display User delete form on GET.
 exports.user_delete_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: User delete GET");
@@ -96,14 +108,4 @@ exports.user_update_get = asyncHandler(async (req, res, next) => {
 // Handle User update on POST.
 exports.user_update_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: User update POST");
-});
-
-// Display User login form on GET.
-exports.user_login_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User login GET");
-});
-
-// Handle User login on POST.
-exports.user_login_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User login POST");
 });

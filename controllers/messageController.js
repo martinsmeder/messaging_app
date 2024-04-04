@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 // Home page: Display list of all Konversations (list of unique users a user has
 // messaged).
 exports.index = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Home page (conversation list)");
+  res.render("index", { title: "Messaging App" });
 });
 
 // Display list of all Messages between two users.
