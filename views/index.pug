@@ -4,4 +4,7 @@ include layout
     if currentUser
       p Conversation List
     else 
-      p Please login or sign up
+      if message 
+        p.message= message
+      else 
+        p Please login or sign up

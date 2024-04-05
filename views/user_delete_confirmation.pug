@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1 Confirm Account Deletion
+  p Are you sure you want to delete your account?
+  form(action="/user/delete" method="post")
+    input(type="hidden" name="userId" value="#{userId}")
+    button(type="submit") Yes, delete my account
+    a(href="/") Cancel

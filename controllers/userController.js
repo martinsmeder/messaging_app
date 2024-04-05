@@ -160,10 +160,15 @@ exports.user_update_post = asyncHandler(async (req, res, next) => {
 
 // Display User delete form on GET.
 exports.user_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User delete GET");
+  // Render a confirmation page
+  res.render("user_delete_confirmation", { title: "Delete User" });
 });
 
 // Handle User delete on POST.
 exports.user_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: User delete POST");
+  // Find and delete user
+  await User.findByIdAndDelete(req.user._id);
+
+  // Redirect to homepage with success message
+  res.redirect("/?message=User%20deleted%20successfully");
 });
