@@ -1,10 +1,23 @@
-include layout
-  block content
-    h1= title
-    if currentUser
-      p Conversation List
+extends layout
+
+block content
+  h1= title
+  if currentUser
+    h1 Conversations
+    ul
+      if uniqueUsers
+        for userId in uniqueUsers
+          li
+            a(href="/conversation/#{userId}") View conversation with #{userId}
+      else
+        li No conversations found
+  else 
+    if message 
+      p.message= message
     else 
-      if message 
-        p.message= message
-      else 
-        p Please login or sign up
+      p Please login or sign up
+  
+  if errors
+    ul
+      each error in errors
+        li= error.msg

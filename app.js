@@ -28,6 +28,8 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    // Set the expiration time for the session cookies to 24 hours
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24 hours in milliseconds
   })
 );
 
