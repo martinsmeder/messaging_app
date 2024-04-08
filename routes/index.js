@@ -7,6 +7,7 @@ const message_controller = require("../controllers/messageController");
 // =============================== MESSAGE ROUTES ===============================
 router.get("/", message_controller.index);
 router.get("/messages", message_controller.all_messages_list); // Temporary. Remove when everything works!
+router.get("/conversations", message_controller.conversation_list);
 router.get("/conversation/:id/messages", message_controller.message_list);
 router.get(
   "/conversation/:id/message/create",

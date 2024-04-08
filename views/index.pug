@@ -3,8 +3,8 @@ extends layout
 block content
   h1= title
   if currentUser
-    h1 Conversations
-    p Implement list of conversations
+    h1 Welcome #{currentUser.username}!
+    a(href="/conversations") My conversations
   else 
     if message 
       p.message= message

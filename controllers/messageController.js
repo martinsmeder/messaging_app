@@ -2,13 +2,17 @@ const Message = require("../models/message");
 const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 
-// Home page: Display list of all conversations (list of unique users a user has messaged).
+// Home page.
 exports.index = asyncHandler(async (req, res, next) => {
   // Retrieve the message from the query parameters
   const message = req.query.message;
 
   // Render the homepage template with the message
   res.render("index", { message });
+});
+
+exports.conversation_list = asyncHandler(async (req, res, next) => {
+  res.render("conversation_list", { title: "Conversations" });
 });
 
 // List of all messages.
