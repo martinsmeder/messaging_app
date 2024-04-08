@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+  if messages.length
+    ul
+      each message in messages
+        li= message.content
+  else
+    p No messages found
