@@ -4,13 +4,7 @@ block content
   h1= title
   if currentUser
     h1 Conversations
-    ul
-      if uniqueUsers
-        for userId in uniqueUsers
-          li
-            a(href="/conversation/#{userId}") View conversation with #{userId}
-      else
-        li No conversations found
+    p Implement list of conversations
   else 
     if message 
       p.message= message

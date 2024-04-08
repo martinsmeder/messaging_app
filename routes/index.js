@@ -5,14 +5,7 @@ const user_controller = require("../controllers/userController");
 const message_controller = require("../controllers/messageController");
 
 // =============================== MESSAGE ROUTES ===============================
-router.get("/", async (req, res) => {
-  // Retrieve the message from the query parameters
-  const message = req.query.message;
-
-  // Render the homepage template with the message
-  res.render("index", { message });
-});
-
+router.get("/", message_controller.index);
 router.get("/conversation/:id/messages", message_controller.message_list);
 router.get(
   "/conversation/:id/message/create",
@@ -40,6 +33,7 @@ router.post(
 );
 
 // =============================== USER ROUTES ===============================
+router.get("/users", user_controller.user_list);
 router.get("/signup", user_controller.user_signup_get);
 router.post("/signup", user_controller.user_signup_post);
 router.get("/login", user_controller.user_login_get);

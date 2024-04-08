@@ -4,6 +4,23 @@ const asyncHandler = require("express-async-handler");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 
+// User list (temporary).
+exports.user_list = asyncHandler(async (req, res, next) => {
+  try {
+    // Fetch all users from the database
+    const users = await User.find();
+
+    res.render("user_list", {
+      title: "User List",
+      users: users,
+    });
+  } catch (err) {
+    console.error("Error fetching user list:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
+});
+
 // Display detail page for a specific User.
 exports.user_detail = asyncHandler(async (req, res, next) => {
   try {
