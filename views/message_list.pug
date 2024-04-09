@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  if messages.length
+    ul
+      each message in messages
+        li
+          p= message.date.toLocaleString()
+          p= message.content
+          p Sent by: #{message.sender.username}
+          p Received by: #{message.recipient.username}
+  else
+    p No messages found
+
+  if errors
+    ul
+      each error in errors
+        li= error.msg

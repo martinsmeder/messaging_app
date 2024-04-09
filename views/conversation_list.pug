@@ -6,6 +6,12 @@ block content
     ul
       each conversation in conversations
         - const otherUser = (conversation.sender._id.toString() === currentUser._id.toString()) ? conversation.recipient : conversation.sender
-        li Conversation with #{otherUser.username}
+        li
+          a(href=`/conversation/${conversation.conversationId}/messages`) #{otherUser.username}
   else
     p Sign in to view conversations
+  
+  if errors
+    ul
+      each error in errors
+        li= error.msg

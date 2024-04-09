@@ -61,14 +61,19 @@ exports.conversation_list = asyncHandler(async (req, res, next) => {
   }
 });
 
-// List of all messages.
-exports.all_messages_list = asyncHandler(async (req, res, next) => {
+// Display list of all Messages in a specific conversation.
+exports.message_list = asyncHandler(async (req, res, next) => {
   try {
-    // Fetch all messages from the database
-    const messages = await Message.find();
+    // Get the conversationId from URL parameter
+    const conversationId = req.params.id;
 
-    res.render("all_messages_list", {
-      title: "All Messages",
+    // Fetch messages belonging to the specified conversationId
+    const messages = await Message.find({ conversationId })
+      .populate("sender", "username")
+      .populate("recipient", "username");
+
+    res.render("message_list", {
+      title: "Messages",
       messages: messages,
     });
   } catch (err) {
@@ -76,11 +81,6 @@ exports.all_messages_list = asyncHandler(async (req, res, next) => {
     // Pass the error to the error handling middleware
     next(err);
   }
-});
-
-// Display list of all Messages between two users.
-exports.message_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: List of messages from specific conversation");
 });
 
 // Display Message create form on GET.
