@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
   if currentUser 
-    p Render conversation list
+    ul
+      each conversation in conversations
+        li Conversation with #{conversation.sender.username} and #{conversation.recipient.username}
   else
-    p Sign in to view messages
+    p Sign in to view conversations

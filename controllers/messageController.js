@@ -11,8 +11,25 @@ exports.index = asyncHandler(async (req, res, next) => {
   res.render("index", { message });
 });
 
+// List of conversations for currently logged in user.
 exports.conversation_list = asyncHandler(async (req, res, next) => {
-  res.render("conversation_list", { title: "Conversations" });
+  try {
+    // Fetch conversations involving the currently logged-in user
+    const conversations = await Message.find({
+      $or: [{ sender: req.user._id }, { recipient: req.user._id }],
+    })
+      .populate("sender", "username")
+      .populate("recipient", "username");
+
+    res.render("conversation_list", {
+      title: "Conversations",
+      conversations: conversations,
+    });
+  } catch (err) {
+    console.error("Error fetching conversation list:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
 });
 
 // List of all messages.

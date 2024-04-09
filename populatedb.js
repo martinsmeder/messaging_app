@@ -64,18 +64,14 @@ async function createUsers() {
 }
 
 async function createMessages(users) {
+  const conversationId = "507f1f77bcf86cd799439012";
   const createdMessages = await Promise.all([
-    messageCreate(
-      users[0]._id,
-      users[1]._id,
-      "Hello, world!",
-      "507f1f77bcf86cd799439011"
-    ),
+    messageCreate(users[0]._id, users[1]._id, "Hello, world!", conversationId),
     messageCreate(
       users[1]._id,
       users[0]._id,
       "This is a test message.",
-      "507f1f77bcf86cd799439012"
+      conversationId
     ),
   ]);
   return createdMessages;
