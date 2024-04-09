@@ -5,6 +5,9 @@ block content
   if currentUser
     h1 Welcome #{currentUser.username}!
     a(href="/conversations") My conversations
+    br
+    br
+    a(href="/message/create") Create new message
   else 
     if message 
       p.message= message
