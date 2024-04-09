@@ -21,9 +21,38 @@ exports.conversation_list = asyncHandler(async (req, res, next) => {
       .populate("sender", "username")
       .populate("recipient", "username");
 
+    // Create a set to store unique user pairs
+    const uniqueConversations = new Set();
+
+    // Filter conversations to ensure uniqueness based on participants
+    const processedConversations = conversations.filter((conversation) => {
+      // Determine the other user in the conversation
+      const otherUser =
+        // If the current user is the sender, the other user is the recipient
+        conversation.sender._id.toString() === req.user._id.toString()
+          ? conversation.recipient
+          : // If the current user is the recipient, the other user is the sender
+            conversation.sender;
+
+      // Create a unique key for the conversation based on user IDs, sorted alphabetically
+      const key = [otherUser._id, req.user._id].sort().join("-");
+
+      // Check if this conversation has already been processed
+      if (!uniqueConversations.has(key)) {
+        // If not, add the conversation key to the set of unique conversations
+        uniqueConversations.add(key);
+        // Return true to include this conversation in the filtered list
+        return true;
+      }
+
+      // If the conversation is already in the set, return false to exclude it from the filtered list
+      return false;
+    });
+
+    // Render processed list of conversations
     res.render("conversation_list", {
       title: "Conversations",
-      conversations: conversations,
+      conversations: processedConversations,
     });
   } catch (err) {
     console.error("Error fetching conversation list:", err);

@@ -5,6 +5,7 @@ block content
   if currentUser 
     ul
       each conversation in conversations
-        li Conversation with #{conversation.sender.username} and #{conversation.recipient.username}
+        - const otherUser = (conversation.sender._id.toString() === currentUser._id.toString()) ? conversation.recipient : conversation.sender
+        li Conversation with #{otherUser.username}
   else
     p Sign in to view conversations
