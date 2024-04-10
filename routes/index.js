@@ -8,15 +8,15 @@ const message_controller = require("../controllers/messageController");
 router.get("/", message_controller.index);
 router.get("/conversations", message_controller.conversation_list);
 router.get("/conversation/:id/messages", message_controller.message_list);
-router.get("/message/create", message_controller.message_create_get);
-router.post("/message/create", message_controller.message_create_post);
+router.get("/message/create", message_controller.message_create_new_get);
+router.post("/message/create", message_controller.message_create_new_post);
 router.get(
   "/conversation/:id/message/create",
-  message_controller.message_create_get
+  message_controller.message_create_existing_get
 );
 router.post(
   "/conversation/:id/message/create",
-  message_controller.message_create_post
+  message_controller.message_create_existing_post
 );
 router.get(
   "/conversation/:id/message/:id/delete",

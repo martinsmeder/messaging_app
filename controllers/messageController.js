@@ -83,37 +83,48 @@ exports.message_list = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Display Message create form on GET.
-exports.message_create_get = asyncHandler(async (req, res, next) => {
+// Display Message create new form on GET.
+exports.message_create_new_get = asyncHandler(async (req, res, next) => {
   try {
-    // Check if conversationId is provided in the URL
-    if (req.params.id) {
-      // Get the conversationId from URL parameter
-      const conversationId = req.params.id;
-      if (!conversationId) {
-        // Handle scenario where conversation is not found
-        return res.status(404).send("Conversation not found");
-      }
-
-      // Render the form for adding a message to an existing conversation
-      res.render("message_create_existing", {
-        title: "Add Message to Conversation",
-        conversation: conversationId,
-      });
-    } else {
-      // Render the form for creating a new message
-      res.render("message_create_new", { title: "Create New Message" });
-    }
+    // Render the form for creating a new message
+    res.render("message_create_new_form", { title: "Create New Message" });
   } catch (err) {
-    console.error("Error creating or adding message:", err);
+    console.error("Error creating new message:", err);
     // Pass the error to the error handling middleware
     next(err);
   }
 });
 
-// Handle Message create on POST.
-exports.message_create_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Message create POST");
+// Display Message create existing form on GET.
+exports.message_create_existing_get = asyncHandler(async (req, res, next) => {
+  try {
+    // Check if conversationId is provided in the URL
+    const conversationId = req.params.id;
+    if (!conversationId) {
+      // Handle scenario where conversation is not found
+      return res.status(404).send("Conversation not found");
+    }
+
+    // Render the form for adding a message to an existing conversation
+    res.render("message_create_existing_form", {
+      title: "Add Message to Conversation",
+      conversation: conversationId,
+    });
+  } catch (err) {
+    console.error("Error adding message to existing conversation:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
+});
+
+// Handle Message create new on POST.
+exports.message_create_new_post = asyncHandler(async (req, res, next) => {
+  res.send("NOT IMPLEMENTED: Create New Message POST");
+});
+
+// Handle Message create existing on POST.
+exports.message_create_existing_post = asyncHandler(async (req, res, next) => {
+  res.send("NOT IMPLEMENTED: Add Message to Existing Conversation POST");
 });
 
 // Display Message delete form on GET.
