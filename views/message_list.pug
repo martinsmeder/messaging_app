@@ -3,6 +3,7 @@ extends layout
 block content
   h1= title
   if messages.length
+    a(href=`/conversation/${conversationId}/message/create`) Add Message to Conversation
     ul
       each message in messages
         li

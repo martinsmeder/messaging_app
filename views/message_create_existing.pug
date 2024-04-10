@@ -4,7 +4,7 @@ block content
   h1= title
   form(action=`/conversation/${conversationId}/message/create`, method="post")
     label(for="content") Content:
-    input(type="text", id="content", name="content")
+    textarea(id="content", name="content", rows="5", cols="50") 
     br
-    input(type="hidden", id="recipient", name="recipient" value=`${conversation.recipient}`)
+    input(type="hidden", id="recipient", name="recipient", value=`${conversation.recipient}`)
     button(type="submit") Send Message

@@ -88,9 +88,9 @@ exports.message_create_get = asyncHandler(async (req, res, next) => {
   try {
     // Check if conversationId is provided in the URL
     if (req.params.id) {
-      // Get the conversation details based on the conversationId
-      const conversation = await Conversation.findById(req.params.id);
-      if (!conversation) {
+      // Get the conversationId from URL parameter
+      const conversationId = req.params.id;
+      if (!conversationId) {
         // Handle scenario where conversation is not found
         return res.status(404).send("Conversation not found");
       }
@@ -98,7 +98,7 @@ exports.message_create_get = asyncHandler(async (req, res, next) => {
       // Render the form for adding a message to an existing conversation
       res.render("message_create_existing", {
         title: "Add Message to Conversation",
-        conversation: conversation,
+        conversation: conversationId,
       });
     } else {
       // Render the form for creating a new message
