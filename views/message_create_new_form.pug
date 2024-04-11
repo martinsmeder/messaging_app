@@ -1,15 +1,14 @@
 extends layout
 
 block content
-  if currentUser
-    h1= title
-    form(action="/message/create", method="post")
-        label(for="content") Content:
-        textarea(id="content", name="content", rows="5", cols="50") 
-        br
-        label(for="recipient") Recipient:
-        input(type="text", id="recipient", name="recipient")
-        br
-        button(type="submit") Send Message
-  else 
-    p Sign in to send messages
+  h1= title
+  form(action="/message/create", method="post")
+    label(for="content") Content:
+    textarea(id="content", name="content", rows="5", cols="50") 
+    br
+    label(for="recipient") Recipient:
+    input(type="text", id="recipient", name="recipient")
+    br
+    button(type="submit") Send Message
+  if error
+    p.error= error

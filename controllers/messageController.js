@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Message = require("../models/message");
 const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
@@ -119,7 +120,55 @@ exports.message_create_existing_get = asyncHandler(async (req, res, next) => {
 
 // Handle Message create new on POST.
 exports.message_create_new_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Create New Message POST");
+  try {
+    // Extract data from the request body
+    const { content, recipient } = req.body;
+
+    // Check if the recipient exists in the database
+    const recipientUser = await User.findOne({ username: recipient });
+    if (!recipientUser) {
+      // Render the form again with an error message
+      return res.render("message_create_new_form", {
+        title: "Create New Message",
+        error: "Recipient not found",
+      });
+    }
+
+    // Find if there's an existing conversation between the currentUser and the recipient
+    const existingConversation = await Message.findOne({
+      sender: req.user._id,
+      recipient: recipientUser._id,
+    });
+
+    if (existingConversation) {
+      // Conversation already exists, return an error
+      return res.render("message_create_new_form", {
+        title: "Create New Message",
+        error: "You already have a conversation with this recipient",
+      });
+    }
+
+    // Create a new conversationId
+    const newConversationId = new mongoose.Types.ObjectId();
+
+    // Create a new message instance with the new conversationId
+    const newMessage = new Message({
+      content: content,
+      sender: req.user._id,
+      recipient: recipientUser._id,
+      conversationId: newConversationId,
+    });
+
+    // Save the new message to the database
+    await newMessage.save();
+
+    // Redirect the user to the conversation or message list page
+    res.redirect(`/conversation/${newConversationId}/messages`);
+  } catch (err) {
+    console.error("Error creating new message:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
 });
 
 // Handle Message create existing on POST.

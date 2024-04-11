@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  form(action=`/conversation/${conversationId}/message/create`, method="post")
+  form(action=`/conversation/${conversation}/message/create`, method="post")
     label(for="content") Content:
     textarea(id="content", name="content", rows="5", cols="50") 
     br
