@@ -13,9 +13,8 @@ block content
 
   if error
     p.error= error
-    // Works
+
   if errors
     ul
-      for error in errors
+      each error in errors
         li= error.msg
-    // Doesn't work

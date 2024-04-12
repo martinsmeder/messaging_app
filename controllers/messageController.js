@@ -147,7 +147,7 @@ exports.message_create_new_post = asyncHandler(async (req, res, next) => {
     if (!errors.isEmpty()) {
       return res.render("message_create_new_form", {
         title: "Create New Message",
-        error: errors.array(),
+        errors: errors.array(),
       });
     }
 
@@ -216,10 +216,11 @@ exports.message_create_existing_post = asyncHandler(async (req, res, next) => {
     // Check for validation errors
     const errors = validationResult(req);
 
+    // If there are errors, render the form again with error messages
     if (!errors.isEmpty()) {
       return res.render("message_create_existing_form", {
         title: "Add Message to Conversation",
-        error: errors.array(),
+        errors: errors.array(),
       });
     }
 
