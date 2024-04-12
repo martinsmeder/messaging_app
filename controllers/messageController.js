@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Message = require("../models/message");
 const User = require("../models/user");
+const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
 // Home page.
@@ -125,6 +126,31 @@ exports.message_create_new_post = asyncHandler(async (req, res, next) => {
     // Extract data from the request body
     const { content, recipient } = req.body;
 
+    // Validate the input data
+    await body("content")
+      .trim()
+      .isLength({ min: 1 })
+      .escape()
+      .withMessage("Content must be specified.")
+      .run(req);
+
+    await body("recipient")
+      .trim()
+      .isLength({ min: 1 })
+      .escape()
+      .withMessage("Recipient must be specified.")
+      .run(req);
+
+    // Check for validation errors
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.render("message_create_new_form", {
+        title: "Create New Message",
+        error: errors.array(),
+      });
+    }
+
     // Check if the recipient exists in the database
     const recipientUser = await User.findOne({ username: recipient });
     if (!recipientUser) {
@@ -174,7 +200,64 @@ exports.message_create_new_post = asyncHandler(async (req, res, next) => {
 
 // Handle Message create existing on POST.
 exports.message_create_existing_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Add Message to Existing Conversation POST");
+  try {
+    // Extract data from the request body
+    const { content } = req.body;
+    const conversationId = req.params.id; // Get conversationId from URL parameter
+
+    // Validate the input data
+    await body("content")
+      .trim()
+      .isLength({ min: 1 })
+      .escape()
+      .withMessage("Content must be specified.")
+      .run(req);
+
+    // Check for validation errors
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.render("message_create_existing_form", {
+        title: "Add Message to Conversation",
+        error: errors.array(),
+      });
+    }
+
+    // Find the conversation by its ID
+    const conversation = await Message.findOne({
+      conversationId,
+    })
+      .populate("sender")
+      .populate("recipient");
+
+    // Check if the conversation exists
+    if (!conversation) {
+      return res.status(404).send("Conversation not found");
+    }
+
+    // Determine the recipient based on the sender
+    const recipientId = conversation.sender.equals(req.user._id)
+      ? conversation.recipient
+      : conversation.sender;
+
+    // Create a new message instance with the existing conversationId
+    const newMessage = new Message({
+      content: content,
+      sender: req.user._id, // Assuming the sender is the currently logged-in user
+      recipient: recipientId,
+      conversationId: conversationId,
+    });
+
+    // Save the new message to the database
+    await newMessage.save();
+
+    // Redirect the user to the conversation or message list page
+    res.redirect(`/conversation/${conversationId}/messages`);
+  } catch (err) {
+    console.error("Error adding message to existing conversation:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
 });
 
 // Display Message delete form on GET.

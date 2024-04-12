@@ -10,5 +10,12 @@ block content
     input(type="text", id="recipient", name="recipient")
     br
     button(type="submit") Send Message
+
   if error
     p.error= error
+    // Works
+  if errors
+    ul
+      for error in errors
+        li= error.msg
+    // Doesn't work

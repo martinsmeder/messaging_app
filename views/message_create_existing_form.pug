@@ -7,3 +7,9 @@ block content
     textarea(id="content", name="content", rows="5", cols="50") 
     br
     button(type="submit") Send Message
+
+  if errors
+    ul
+      for error in errors
+        li= error.msg
+      // Doesn't work
