@@ -76,6 +76,7 @@ exports.message_list = asyncHandler(async (req, res, next) => {
     res.render("message_list", {
       title: "Messages",
       messages: messages,
+      conversationId: conversationId,
     });
   } catch (err) {
     console.error("Error fetching message list:", err);
@@ -109,7 +110,7 @@ exports.message_create_existing_get = asyncHandler(async (req, res, next) => {
     // Render the form for adding a message to an existing conversation
     res.render("message_create_existing_form", {
       title: "Add Message to Conversation",
-      conversation: conversationId,
+      conversationId: conversationId,
     });
   } catch (err) {
     console.error("Error adding message to existing conversation:", err);
