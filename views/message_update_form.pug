@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  form(action=`/conversation/${conversationId}/message/${message._id}/update`, method="post")
+    label(for="content") Content:
+    textarea(id="content", name="content", rows="5", cols="50")= message.content
+    br
+    button(type="submit") Update Message
+
+  if errors
+    ul
+      each error in errors
+        li= error.msg

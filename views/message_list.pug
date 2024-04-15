@@ -17,6 +17,9 @@ block content
           p Received by: #{message.recipient.username}
           form(action=`/conversation/${conversationId}/message/${message._id}/delete`, method="post")
             button(type="submit") Delete message
+          br
+          a(href=`/conversation/${conversationId}/message/${message._id}/update`) Update message
+
   else
     p No messages found
 

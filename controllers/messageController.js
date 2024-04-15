@@ -300,10 +300,56 @@ exports.conversation_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display Message update form on GET.
 exports.message_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Message update GET");
+  try {
+    // Extract the message ID from the URL parameter
+    const messageId = req.params.messageId;
+
+    // Find the message by its ID
+    const message = await Message.findById(messageId);
+
+    if (!message) {
+      // Message not found
+      return res.status(404).send("Message not found");
+    }
+
+    // Render the form for updating the message content
+    res.render("message_update_form", {
+      title: "Update Message",
+      conversationId: req.params.conversationId,
+      message: message,
+    });
+  } catch (err) {
+    console.error("Error getting message for update:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
 });
 
 // Handle Message update on POST.
 exports.message_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Message update POST");
+  try {
+    // Extract the message ID from the URL parameter
+    const messageId = req.params.messageId;
+
+    // Find the message by its ID
+    const message = await Message.findById(messageId);
+
+    if (!message) {
+      // Message not found
+      return res.status(404).send("Message not found");
+    }
+
+    // Update the message content with the data from the request body
+    message.content = req.body.content;
+
+    // Save the updated message
+    await message.save();
+
+    // Redirect the user back to the conversation or message list page
+    res.redirect(`/conversation/${req.params.conversationId}/messages`);
+  } catch (err) {
+    console.error("Error updating message:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
 });

@@ -27,11 +27,11 @@ router.post(
   message_controller.conversation_delete_post
 );
 router.get(
-  "/conversation/:id/message/:id/update",
+  "/conversation/:conversationId/message/:messageId/update",
   message_controller.message_update_get
 );
 router.post(
-  "/conversation/:id/message/:id/update",
+  "/conversation/:conversationId/message/:messageId/update",
   message_controller.message_update_post
 );
 
