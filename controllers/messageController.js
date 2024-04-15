@@ -280,6 +280,24 @@ exports.message_delete_post = asyncHandler(async (req, res, next) => {
   }
 });
 
+// Handle Conversation delete on POST.
+exports.conversation_delete_post = asyncHandler(async (req, res, next) => {
+  try {
+    // Extract the conversation ID from the URL parameter
+    const conversationId = req.params.id;
+
+    // Delete all messages associated with the conversation
+    await Message.deleteMany({ conversationId });
+
+    // Redirect the user back to some appropriate page
+    res.redirect("/"); // Redirect to home page for example
+  } catch (err) {
+    console.error("Error deleting conversation:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
+});
+
 // Display Message update form on GET.
 exports.message_update_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Message update GET");

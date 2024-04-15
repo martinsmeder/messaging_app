@@ -4,6 +4,10 @@ block content
   h1= title
   if messages.length
     a(href=`/conversation/${conversationId}/message/create`) Add Message to Conversation
+    br
+    br
+    form(action=`/conversation/${conversationId}/delete`, method="post")
+      button(type="submit", style="background: red; color: white") Delete conversation
     ul
       each message in messages
         li
@@ -12,7 +16,7 @@ block content
           p Sent by: #{message.sender.username}
           p Received by: #{message.recipient.username}
           form(action=`/conversation/${conversationId}/message/${message._id}/delete`, method="post")
-            button(type="submit") Delete
+            button(type="submit") Delete message
   else
     p No messages found
 

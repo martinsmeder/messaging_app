@@ -22,6 +22,10 @@ router.post(
   "/conversation/:conversationId/message/:messageId/delete",
   message_controller.message_delete_post
 );
+router.post(
+  "/conversation/:id/delete",
+  message_controller.conversation_delete_post
+);
 router.get(
   "/conversation/:id/message/:id/update",
   message_controller.message_update_get
