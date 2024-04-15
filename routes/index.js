@@ -18,12 +18,8 @@ router.post(
   "/conversation/:id/message/create",
   message_controller.message_create_existing_post
 );
-router.get(
-  "/conversation/:id/message/:id/delete",
-  message_controller.message_delete_get
-);
 router.post(
-  "/conversation/:id/message/:id/delete",
+  "/conversation/:conversationId/message/:messageId/delete",
   message_controller.message_delete_post
 );
 router.get(

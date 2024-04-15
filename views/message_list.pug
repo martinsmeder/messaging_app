@@ -11,6 +11,8 @@ block content
           p= message.content
           p Sent by: #{message.sender.username}
           p Received by: #{message.recipient.username}
+          form(action=`/conversation/${conversationId}/message/${message._id}/delete`, method="post")
+            button(type="submit") Delete
   else
     p No messages found
 

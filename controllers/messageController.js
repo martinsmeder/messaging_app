@@ -261,14 +261,23 @@ exports.message_create_existing_post = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Display Message delete form on GET.
-exports.message_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Message delete GET");
-});
-
 // Handle Message delete on POST.
 exports.message_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Message delete POST");
+  try {
+    // Extract IDs from the URL parameters
+    const conversationId = req.params.conversationId;
+    const messageId = req.params.messageId;
+
+    // Find the message by its ID and delete it
+    await Message.findByIdAndDelete(messageId);
+
+    // Redirect the user back to the conversation or message list page
+    res.redirect(`/conversation/${conversationId}/messages`);
+  } catch (err) {
+    console.error("Error deleting message:", err);
+    // Pass the error to the error handling middleware
+    next(err);
+  }
 });
 
 // Display Message update form on GET.
